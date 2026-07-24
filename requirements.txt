@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+google-genai
+pydantic
+pydantic-settings
+python-dotenv
+httpx
+requests
+gspread
+google-auth
+jinja2
