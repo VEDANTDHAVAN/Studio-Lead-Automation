@@ -510,6 +510,181 @@ Swagger UI was used for interactive API testing.
 
 ---
 
+# Testing & Evaluation
+
+To validate the automation pipeline, four representative enquiry emails were created to evaluate both normal and edge-case behavior.
+
+The system was tested on:
+
+- ✅ A clean, well-structured enquiry
+- ✅ A vague and poorly written enquiry
+- ✅ A lead that is not a good fit for the studio
+- ✅ An intentionally challenging input designed to test extraction and qualification logic
+
+---
+
+## Test Case 1 – Clean Enquiry
+
+### Input
+
+```text
+Hi,
+
+We're Ollama Studios, a SaaS startup looking for a complete brand identity and a new marketing website.
+
+Our budget is $15,000 and we'd like to launch in November.
+
+Please let us know if you're available.
+
+Thanks!
+```
+
+### Expected Outcome
+
+| Field | Value |
+|-------|-------|
+| Company | Ollama Studios |
+| Project Type | Branding & Website Development |
+| Budget | $15,000 |
+| Deadline | November |
+| Score | 80 |
+| Status | Qualified |
+
+### System Response
+
+- ✅ Information extracted correctly
+- ✅ Lead qualified
+- ✅ Logged to Google Sheets
+- ✅ Slack notification generated
+- ✅ AI follow-up email created
+
+---
+
+## Test Case 2 – Vague Enquiry
+
+### Input
+
+```text
+Hey,
+
+Need help with our website.
+
+Can someone contact me?
+
+Thanks.
+```
+
+### Expected Outcome
+
+| Field | Value |
+|-------|-------|
+| Company | Unknown |
+| Project Type | Website |
+| Budget | Missing |
+| Deadline | Missing |
+| Contact | Missing |
+| Score | 20 |
+| Status | Declined |
+
+### System Behavior
+
+- Extracted the available project type.
+- Detected missing critical information.
+- Returned a low qualification score.
+- Listed missing fields for follow-up.
+
+This demonstrates graceful handling of incomplete enquiries without crashing or producing invalid data.
+
+---
+
+## Test Case 3 – Bad Fit
+
+### Input
+
+```text
+Hi,
+
+We need someone to repair our office printer and configure our Wi-Fi network.
+
+Budget is $300.
+
+Can you help?
+```
+
+### Expected Outcome
+
+| Field | Value |
+|-------|-------|
+| Company | Unknown |
+| Project Type | IT Support |
+| Budget | $300 |
+| Score | 20 |
+| Status | Declined |
+
+### System Behavior
+
+The project falls outside the services offered by a creative agency.
+
+The lead is automatically declined because it does not meet the business qualification criteria.
+
+---
+
+## Test Case 4 – Edge Case / Logic Stress Test
+
+### Input
+
+```text
+Hi,
+
+We're launching next week.
+
+Need branding, UI/UX, website, mobile app, and marketing assets.
+
+Budget is somewhere between $500 and $200,000.
+
+Not sure who should be contacted.
+
+Maybe.
+
+Thanks.
+```
+
+### Expected Outcome
+
+| Field | Value |
+|-------|-------|
+| Company | Unknown |
+| Budget | Ambiguous |
+| Deadline | Next Week |
+| Missing Fields | Contact Name, Contact Email |
+| Status | Needs Review / Declined (depending on extracted budget) |
+
+### System Behavior
+
+This enquiry intentionally contains contradictory and ambiguous information.
+
+The system:
+
+- Extracts the information it can identify.
+- Flags missing information.
+- Applies deterministic qualification rules.
+- Does not fail or throw validation errors.
+
+This demonstrates robustness against malformed or ambiguous inputs.
+
+---
+
+# Summary
+
+| Test Case | Result |
+|-----------|--------|
+| Clean enquiry | ✅ Qualified successfully |
+| Vague enquiry | ✅ Handled gracefully |
+| Bad fit | ✅ Declined correctly |
+| Edge case | ✅ Robust extraction without failure |
+
+The workflow remained stable across all test cases and consistently produced structured output, qualification results, and automated downstream actions.
+
 ## Test Results
 
 All unit tests pass successfully.
