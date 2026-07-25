@@ -1,7 +1,7 @@
 from functools import lru_cache
 
-from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -9,20 +9,20 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    app_name: str = Field(alias="APP_NAME")
-    debug: bool = Field(alias="DEBUG")
+    app_name: str = "Studio Lead Automation"
+    debug: bool = True
 
-    gemini_api_key: str = Field(alias="GEMINI_API_KEY")
+    groq_api_key: str
+    groq_base_url: str = "https://api.groq.com/openai/v1"
+    llm_model: str = "qwen/qwen3-32b"
 
-    slack_webhook_url: str = Field(alias="SLACK_WEBHOOK_URL")
+    slack_webhook_url: str = ""
+    google_sheet_id: str = ""
 
-    google_sheet_id: str = Field(alias="GOOGLE_SHEET_ID")
-
-    email_address: str = Field(alias="EMAIL_ADDRESS")
-
-    email_password: str = Field(alias="EMAIL_PASSWORD")
+    email_address: str = ""
+    email_password: str = ""
 
 
 @lru_cache
-def get_settings():
-    return Settings()
+def get_settings() -> Settings:
+    return Settings() # pyright: ignore[reportCallIssue]
