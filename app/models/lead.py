@@ -17,7 +17,7 @@ class LeadExtraction(BaseModel):
     project_type: Optional[str] = None
     deliverables: List[str] = []
 
-    budget: Budget = Budget()
+    budget: Optional[Budget] = Budget()
 
     deadline: Optional[str] = None
     urgency: Optional[str] = None
