@@ -19,6 +19,9 @@ class Settings(BaseSettings):
     slack_webhook_url: str = ""
     google_sheet_id: str = ""
 
+    google_sheet_name: str
+    google_service_account: str
+
     email_address: str = ""
     email_password: str = ""
 
