@@ -1,15 +1,15 @@
 from fastapi import APIRouter
 
 from app.models.request import EmailRequest
-from app.services.extraction_service import ExtractionService
+from app.workflow.lead_pipeline import LeadPipeline
 
 router = APIRouter()
 
-service = ExtractionService()
+pipeline = LeadPipeline()
 
 
 @router.post("/analyze")
 def analyze(request: EmailRequest):
-    result = service.analyze(request.email_text)
+    result = pipeline.run(request.email_text)
 
     return result
