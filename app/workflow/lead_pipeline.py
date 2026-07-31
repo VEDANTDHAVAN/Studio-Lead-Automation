@@ -22,6 +22,13 @@ class LeadPipeline:
         # 1. Extract
         lead: LeadExtraction = self.extractor.analyze(email)
 
+        if not lead.is_lead:
+            logger.info("Skipping non-lead email: %s", lead.reason,)
+
+            return {
+                "processed": False, "reason": lead.reason,
+            }
+
         # 2. Qualify
         qualification = self.qualifier.evaluate(lead)
 
@@ -44,7 +51,7 @@ class LeadPipeline:
             logger.exception(f"Slack failed: {e}")
 
         # 5. Generate reply
-        reply = self.email.generate(
+        reply_email = self.email.generate(
             lead,
             qualification,
         )
@@ -52,5 +59,5 @@ class LeadPipeline:
         return {
             "lead": lead.model_dump(),
             "qualification": qualification.model_dump(),
-            "reply_email": reply,
+            "reply_email": reply_email,
         }

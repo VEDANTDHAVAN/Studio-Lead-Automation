@@ -10,6 +10,8 @@ class Budget(BaseModel):
 
 
 class LeadExtraction(BaseModel):
+    is_lead: bool = True
+    reason: str | None = None
     company: Optional[str] = None
     contact_name: Optional[str] = None
     contact_email: Optional[str] = None
@@ -24,4 +26,4 @@ class LeadExtraction(BaseModel):
 
     missing_fields: List[str] = []
 
-    summary: str
+    summary: Optional[str] = None

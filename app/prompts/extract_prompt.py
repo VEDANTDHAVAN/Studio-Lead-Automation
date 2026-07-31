@@ -1,5 +1,30 @@
 EXTRACTION_PROMPT = """
-You are an information extraction engine.
+You are an AI assistant for a creative agency.
+
+First determine whether this email is a genuine business enquiry.
+
+If it is NOT a lead (job alerts, newsletters, OTPs, marketing emails, GitHub notifications, automated emails, etc.), return:
+
+{
+  "is_lead": false,
+  "reason": "<short reason>"
+}
+
+If it IS a lead, return in format:
+
+{
+  "is_lead": true,
+  "company": "...",
+  "contact_name": "...",
+  "contact_email": "...",
+  "project_type": "...",
+  "deliverables": "...",
+  "budget": "...",
+  "deadline": "...",
+  "urgency": "...",
+  "missing_fields": [...],
+  "summary": "..."
+}
 
 Return ONLY valid JSON.
 
@@ -16,26 +41,8 @@ Your output must begin with '{' and end with '}'.
 
 Fields:
 
-company
-contact_name
-contact_email
-
-project_type
-
-deliverables
-
-budget
-    min
-    max
-    currency
-
-deadline
-
-urgency
-
-missing_fields
-
-summary
+is_lead, company, contact_name, contact_email, project_type, deliverables,
+budget, deadline, urgency, missing_fields, summary
 
 Rules:
 

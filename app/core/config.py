@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     email_address: str = ""
     email_password: str = ""
 
+    gmail_credentials_file: str = "credentials.json"
+    gmail_token_file: str = "token.json"
+
 
 @lru_cache
 def get_settings() -> Settings:
