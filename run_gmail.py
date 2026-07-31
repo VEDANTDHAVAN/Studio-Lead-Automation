@@ -1,4 +1,4 @@
-from app.workflow.gmail_pipeline import GmailPipeline
+from app.workflow.gmail_worker import GmailWorker
 
 if __name__ == "__main__":
-    GmailPipeline().start()
+    GmailWorker().run()

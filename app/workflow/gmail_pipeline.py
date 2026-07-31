@@ -100,6 +100,10 @@ From: {message.sender} <{message.sender_email}>
     def start(self, interval: int = 30):
         logger.info("Starting Gmail Lead Automation...")
 
-        while True:
-            self.process_once()
-            time.sleep(interval)
+        try:
+            while True:
+                self.process_once()
+                time.sleep(interval)
+
+        except KeyboardInterrupt:
+            logger.info("Stopping Gmail Worker")

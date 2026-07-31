@@ -13,6 +13,10 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
+from tenacity import retry
+from tenacity import stop_after_attempt
+from tenacity import wait_exponential
+
 SCOPES = [
     "https://www.googleapis.com/auth/gmail.modify",
 ]
@@ -120,6 +124,10 @@ class GmailClient:
 
         return ""
 
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=2),
+    )
     def send_reply(
         self, thread_id: str, to_email: str, 
         subject: str, body: str,

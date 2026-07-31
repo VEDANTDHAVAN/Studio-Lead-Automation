@@ -27,6 +27,7 @@ class Settings(BaseSettings):
 
     gmail_credentials_file: str = "credentials.json"
     gmail_token_file: str = "token.json"
+    gmail_poll_interval: int = 30
 
 
 @lru_cache
