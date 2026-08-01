@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from app.api.routes import router
 from app.core.config import get_settings
 from app.workflow.gmail_pipeline import GmailPipeline
+from app.database.init_db import *
 
 logger = logging.getLogger(__name__)
 

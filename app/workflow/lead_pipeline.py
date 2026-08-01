@@ -7,6 +7,7 @@ from app.services.email_service import EmailService
 from app.services.extraction_service import ExtractionService
 from app.services.qualification_service import QualificationService
 
+from app.repositories.lead_repository import LeadRepository
 
 class LeadPipeline:
     def __init__(self):
@@ -15,8 +16,8 @@ class LeadPipeline:
 
         self.sheets = GoogleSheetsClient()
         self.slack = SlackClient()
-
         self.email = EmailService()
+        self.repository = LeadRepository()
 
     def run(self, email: str):
         # 1. Extract
@@ -31,6 +32,7 @@ class LeadPipeline:
 
         # 2. Qualify
         qualification = self.qualifier.evaluate(lead)
+        self.repository.save(lead, qualification)
 
         # 3. Persist
         try:
